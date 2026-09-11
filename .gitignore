@@ -1,0 +1,11 @@
+.env
+node_modules/
+vendor/
+target/
+bin/
+obj/
+*.zip
+.DS_Store
+
+__pycache__/
+*.pyc
