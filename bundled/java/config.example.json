@@ -1,0 +1,28 @@
+{
+  "prefix": "m!",
+  "status": "Watching Maszynka.pro",
+  "brand": {
+    "name": "Maszynka.pro",
+    "color": 3447003
+  },
+  "verification": {
+    "enabled": true,
+    "channelId": "PUT_VERIFICATION_CHANNEL_ID_HERE",
+    "roleId": "PUT_VERIFIED_ROLE_ID_HERE",
+    "emoji": "✅",
+    "title": "Weryfikacja",
+    "description": "Kliknij reakcję ✅, aby otrzymać rangę zweryfikowanego użytkownika."
+  },
+  "tickets": {
+    "enabled": true,
+    "panelChannelId": "PUT_TICKET_PANEL_CHANNEL_ID_HERE",
+    "categoryId": "PUT_TICKET_CATEGORY_ID_HERE",
+    "supportRoleId": "PUT_SUPPORT_ROLE_ID_HERE",
+    "emoji": "🎫",
+    "title": "Centrum pomocy",
+    "description": "Kliknij reakcję 🎫, aby utworzyć ticket."
+  },
+  "logs": {
+    "channelId": "PUT_LOG_CHANNEL_ID_HERE"
+  }
+}
