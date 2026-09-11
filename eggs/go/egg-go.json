@@ -1,0 +1,136 @@
+{
+  "_comment": "Generated for Maszynka.pro Discord bot hosting. Import into Pterodactyl PTDL_v2.",
+  "meta": {
+    "version": "PTDL_v2",
+    "update_url": null
+  },
+  "exported_at": "2026-09-11T14:00:18.231Z",
+  "name": "Maszynka.pro Discord Bot - Go",
+  "author": "pantherpaykey@users.noreply.github.com",
+  "description": "Production Go egg for Discord bots with bundled Maszynka.pro template support.",
+  "features": null,
+  "docker_images": {
+    "Go 1.25": "ghcr.io/parkervcp/yolks:go_1.25",
+    "Go 1.24": "ghcr.io/parkervcp/yolks:go_1.24",
+    "Go 1.23": "ghcr.io/parkervcp/yolks:go_1.23"
+  },
+  "file_denylist": [],
+  "startup": "if [ -f /home/container/.git ] || [ -d /home/container/.git ]; then if [ \"${AUTO_UPDATE:-0}\" = \"1\" ]; then git pull --ff-only || exit 1; fi; fi; echo \"[Maszynka] Runtime ready\"; if [ -n \"${STARTUP_COMMAND:-}\" ]; then eval \"${STARTUP_COMMAND}\"; else go run \"$MAIN_FILE\" $STARTUP_ARGS; fi",
+  "config": {
+    "files": "{}",
+    "startup": {
+      "done": "[Maszynka] Runtime ready"
+    },
+    "logs": "{}",
+    "stop": "^C"
+  },
+  "scripts": {
+    "installation": {
+      "script": "#!/bin/bash\nset -euo pipefail\ncd /mnt/server\necho \"[Maszynka] Installing Go Discord bot\"\nif [ \"${USER_UPLOAD:-0}\" = \"1\" ]; then\n  echo \"[Maszynka] USER_UPLOAD=1, skipping git clone\"\nelse\n  if [ -z \"${GIT_REPO:-}\" ]; then echo \"GIT_REPO is not configured\"; exit 1; fi\n  rm -rf repo-tmp\n  git clone --depth 1 --branch \"${GIT_BRANCH:-main}\" \"${GIT_REPO}\" repo-tmp\n  shopt -s dotglob\n  if [ -d \"repo-tmp/${APP_DIR}\" ]; then cp -R \"repo-tmp/${APP_DIR}\"/* .; else echo \"APP_DIR not found: ${APP_DIR}\"; exit 1; fi\n  rm -rf repo-tmp\nfi\nif [ \"${AUTO_INSTALL_DEPS:-1}\" = \"1\" ]; then\n  if [ -f go.mod ]; then go mod download; fi\nfi\necho \"[Maszynka] Install complete\"",
+      "container": "ghcr.io/parkervcp/installers:debian",
+      "entrypoint": "bash"
+    }
+  },
+  "variables": [
+    {
+      "name": "GIT REPO",
+      "description": "Git repository URL used by the installer.",
+      "env_variable": "GIT_REPO",
+      "default_value": "https://github.com/pantherpaykey/Discord-Bots-Bundle",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "GIT BRANCH",
+      "description": "Git branch to clone.",
+      "env_variable": "GIT_BRANCH",
+      "default_value": "main",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:64",
+      "field_type": "text"
+    },
+    {
+      "name": "APP DIR",
+      "description": "Directory inside GIT_REPO copied into the server.",
+      "env_variable": "APP_DIR",
+      "default_value": "bundled/go",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:128",
+      "field_type": "text"
+    },
+    {
+      "name": "MAIN FILE",
+      "description": "Default entrypoint file/project.",
+      "env_variable": "MAIN_FILE",
+      "default_value": "main.go",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|string|max:128",
+      "field_type": "text"
+    },
+    {
+      "name": "STARTUP COMMAND",
+      "description": "Optional full startup command. Takes precedence when set.",
+      "env_variable": "STARTUP_COMMAND",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "STARTUP ARGS",
+      "description": "Additional startup arguments.",
+      "env_variable": "STARTUP_ARGS",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    },
+    {
+      "name": "AUTO INSTALL DEPS",
+      "description": "Install dependencies during installation.",
+      "env_variable": "AUTO_INSTALL_DEPS",
+      "default_value": "1",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|boolean",
+      "field_type": "text"
+    },
+    {
+      "name": "AUTO UPDATE",
+      "description": "Run git pull --ff-only before startup when the server directory is a git repository.",
+      "env_variable": "AUTO_UPDATE",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|boolean",
+      "field_type": "text"
+    },
+    {
+      "name": "USER UPLOAD",
+      "description": "Skip git clone during install and let the user upload files.",
+      "env_variable": "USER_UPLOAD",
+      "default_value": "0",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "required|boolean",
+      "field_type": "text"
+    },
+    {
+      "name": "DISCORD TOKEN",
+      "description": "Discord bot token exposed as DISCORD_TOKEN environment variable.",
+      "env_variable": "DISCORD_TOKEN",
+      "default_value": "",
+      "user_viewable": true,
+      "user_editable": true,
+      "rules": "nullable|string|max:255",
+      "field_type": "text"
+    }
+  ]
+}
