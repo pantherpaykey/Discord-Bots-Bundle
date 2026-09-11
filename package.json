@@ -1,0 +1,1 @@
+{"scripts":{"validate:eggs":"node scripts/validate-eggs.mjs","build:release":"bash scripts/build-release.sh"},"devDependencies":{}}
