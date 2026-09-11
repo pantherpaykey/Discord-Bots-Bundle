@@ -1,0 +1,1 @@
+fn main() { if std::env::var("DISCORD_TOKEN").unwrap_or_default().is_empty() { eprintln!("DISCORD_TOKEN is not configured"); std::process::exit(1); } println!("[Maszynka] Rust bundled bot template. Build includes serenity; run with a configured token."); }
