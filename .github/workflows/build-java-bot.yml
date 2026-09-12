@@ -26,19 +26,23 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: maven
 
       - name: Build executable JAR
-        working-directory: bundled/java
-        run: mvn -B -DskipTests clean package
+        run: |
+          rm -rf bundled/java/build
+          mkdir -p bundled/java/build/classes
+          javac --release 17 \
+            -d bundled/java/build/classes \
+            bundled/java/src/main/java/pro/maszynka/Bot.java
+          jar --create \
+            --file bundled/java/bot.jar \
+            --main-class pro.maszynka.Bot \
+            -C bundled/java/build/classes .
 
       - name: Validate executable JAR
         run: |
-          test -f bundled/java/target/bot.jar
-          unzip -p bundled/java/target/bot.jar META-INF/MANIFEST.MF | grep -q 'Main-Class: pro.maszynka.Bot'
-
-      - name: Store bot.jar in bundled/java
-        run: cp bundled/java/target/bot.jar bundled/java/bot.jar
+          test -f bundled/java/bot.jar
+          unzip -p bundled/java/bot.jar META-INF/MANIFEST.MF | grep -q 'Main-Class: pro.maszynka.Bot'
 
       - name: Commit built bot.jar
         run: |
